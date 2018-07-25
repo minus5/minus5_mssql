@@ -13,14 +13,12 @@ end
 Gem::PackageTask.new(GEMSPEC) do |pkg|
 end
 
+gem_file = "pkg/minus5_mssql-#{GEMSPEC.version}.gem"
 
 desc "build gem and deploy to gems.minus5.hr"
 task :deploy => [:gem] do
-  file = "pkg/minus5_mssql-#{GEMSPEC.version}.gem"
-  print "installing\n"
-  `gem install #{file} --no-rdoc --no-ri`
-  print "copying to gems.minus5.hr\n"
-  `scp #{file} gems.minus5.hr:/var/www/apps/gems/gems`
+  print "copying to korana.s.minus5.hr\n"
+  `scp #{gem_file} korana.s.minus5.hr:/var/www/gems.minus5.hr/gems`
   print "updating gem server index\n"
-  `ssh ianic@gems.minus5.hr "cd /var/www/apps/gems; sudo gem generate_index"`
+  `ssh korana.s.minus5.hr "cd /var/www/gems.minus5.hr; sudo gem generate_index"`
 end
